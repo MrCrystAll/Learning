@@ -19,7 +19,6 @@ class Node:
         self.right = None
 
     def node_def(self) -> str:
-
         if self.left or self.right:
             return f"NODE | Information Gain = {self.information_gain} | Split IF X[{self.feature_id}] < {self.feature_val} THEN left O/W right"
         else:
@@ -38,7 +37,7 @@ class DecisionTreeClassifier(BaseModel):
     def predict_one_sample(self, X: np.array) -> np.array:
         """Returns prediction for 1 dim array"""
         node = self.tree
-        targets = None
+        pred_probs = None
 
         # Finds the leaf which X belongs
         while node:
@@ -51,7 +50,7 @@ class DecisionTreeClassifier(BaseModel):
         return pred_probs, np.unique(self.labels_in_train)
 
     def _print_recursive(self, node: Node, level=0) -> None:
-        if node != None:
+        if node is not None:
             self._print_recursive(node.left, level + 1)
             print('    ' * 4 * level + '-> ' + node.node_def())
             self._print_recursive(node.right, level + 1)
